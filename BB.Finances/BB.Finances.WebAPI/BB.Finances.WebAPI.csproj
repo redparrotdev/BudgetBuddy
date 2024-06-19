@@ -27,7 +27,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Config\MappingProfiles\" />
     <Folder Include="Controllers\" />
     <Folder Include="Models\Request\" />
     <Folder Include="Models\Response\" />
