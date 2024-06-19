@@ -6,7 +6,7 @@ BydgetBuddy is a ASP.NET WEB API Application with microservice architecture.
 
 - BudgetBuddy.Finances - .NET Microservice Web Api App for managing user Finance Accounts, Categories and Expenses
 - BudgetBuddy.IdentityService ⌛ -  .NET Microservice Web Api App for managing Users and User Data
-- BudgetBuddy.NotificationService - .NET Microservice Web Api App thah notify user about the expenses wia Email, Telegram or Web App.
+- BudgetBuddy.NotificationService ⌛ - .NET Microservice Web Api App thah notify user about the expenses wia Email, Telegram or Web App.
 
 ## Tech / Frameworks
 
