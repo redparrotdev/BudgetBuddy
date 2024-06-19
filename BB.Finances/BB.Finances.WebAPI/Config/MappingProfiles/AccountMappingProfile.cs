@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BB.Finances.Data.DTO;
 using BB.Finances.Data.Entities;
+using BB.Finances.WebAPI.Models.Request;
+using BB.Finances.WebAPI.Models.Response;
 
 namespace BB.Finances.WebAPI.Config.MappingProfiles
 {
@@ -26,6 +28,22 @@ namespace BB.Finances.WebAPI.Config.MappingProfiles
                 .ForMember(e => e.CreationDate, opt => opt.MapFrom(dto => dto.CreationDate))
                 .ForMember(e => e.CurrencyId, opt => opt.MapFrom(dto => dto.CurrencyId))
                 .ForMember(e => e.IsDeleted, opt => opt.MapFrom(dto => dto.IsDeleted));
+
+            CreateMap<AccountDTO, AccountResponseModel>()
+                .ForMember(rm => rm.Id, opt => opt.MapFrom(dto => dto.Id))
+                .ForMember(rm => rm.UserId, opt => opt.MapFrom(dto => dto.UserId))
+                .ForMember(rm => rm.Name, opt => opt.MapFrom(dto => dto.Name))
+                .ForMember(rm => rm.Balance, opt => opt.MapFrom(dto => dto.Balance))
+                .ForMember(rm => rm.creationDate, opt => opt.MapFrom(dto => dto.CreationDate))
+                .ForMember(rm => rm.CurrencyId, opt => opt.MapFrom(dto => dto.CurrencyId))
+                .ForMember(rm => rm.CurrencySign, opt => opt.MapFrom(dto => dto.CurrencySing));
+
+            CreateMap<AccountRequestModel, AccountDTO>()
+                .ForMember(dto => dto.Id, opt => Guid.NewGuid())
+                .ForMember(dto => dto.UserId, opt => opt.MapFrom(rm => rm.UserId))
+                .ForMember(dto => dto.Name, opt => opt.MapFrom(rm => rm.Name))
+                .ForMember(dto => dto.Balance, opt => opt.MapFrom(rm => rm.Balance))
+                .ForMember(dto => dto.CurrencyId, opt => opt.MapFrom(rm => rm.CurrencyId));
         }
     }
 }

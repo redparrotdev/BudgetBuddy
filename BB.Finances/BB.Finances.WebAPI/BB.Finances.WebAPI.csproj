@@ -26,10 +26,4 @@
     <ProjectReference Include="..\BB.Finances.Data\BB.Finances.Data.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-    <Folder Include="Models\Request\" />
-    <Folder Include="Models\Response\" />
-  </ItemGroup>
-
 </Project>

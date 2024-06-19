@@ -16,7 +16,7 @@ namespace BB.Finances.Data.DTO
 
         public double Balance { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        public DateTime CreationDate { get; set; } = DateTime.Now;
 
         public Guid CurrencyId { get; set; }
 
