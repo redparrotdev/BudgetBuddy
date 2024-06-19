@@ -45,9 +45,16 @@ namespace BB.Finances.Core.Services
             throw new NotImplementedException();
         }
 
-        public Task<IEnumerable<AccountDTO>> GetAllByUserIdAsync(Guid userId)
+        public async Task<IEnumerable<AccountDTO>> GetAllByUserIdAsync(Guid userId)
         {
-            throw new NotImplementedException();
+            var entities = await _mdr.Send(new GetAccountsByUserId()
+            {
+                UserId = userId
+            });
+
+            var accounts = _mapper.Map<IEnumerable<AccountDTO>>(entities);
+
+            return accounts;
         }
 
         public async Task<AccountDTO> GetByIdAsync(Guid entityId)

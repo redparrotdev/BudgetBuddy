@@ -33,7 +33,7 @@ namespace BB.Finances.WebAPI.Config.MappingProfiles
                 .ForMember(rm => rm.Id, opt => opt.MapFrom(dto => dto.Id))
                 .ForMember(rm => rm.UserId, opt => opt.MapFrom(dto => dto.UserId))
                 .ForMember(rm => rm.Name, opt => opt.MapFrom(dto => dto.Name))
-                .ForMember(rm => rm.Balance, opt => opt.MapFrom(dto => dto.Balance))
+                .ForMember(rm => rm.Balance, opt => opt.MapFrom(dto => double.Round(dto.Balance, 2)))
                 .ForMember(rm => rm.creationDate, opt => opt.MapFrom(dto => dto.CreationDate))
                 .ForMember(rm => rm.CurrencyId, opt => opt.MapFrom(dto => dto.CurrencyId))
                 .ForMember(rm => rm.CurrencySign, opt => opt.MapFrom(dto => dto.CurrencySing));

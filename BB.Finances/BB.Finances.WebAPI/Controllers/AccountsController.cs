@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BB.Finances.WebAPI.Controllers
 {
-    [Route("api/finances/[controller]")]
+    [Route("api/finances/accounts")]
     [ApiController]
     public class AccountsController : ControllerBase
     {
@@ -41,6 +41,26 @@ namespace BB.Finances.WebAPI.Controllers
             }
         }
 
+        [HttpGet("user/{userId:guid}")]
+        [ProducesResponseType(typeof(IEnumerable<AccountResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> Get([FromRoute] Guid userId)
+        {
+            try
+            {
+                var dtos = await _accountService.GetAllByUserIdAsync(userId);
+
+                var response = _mapper.Map<IEnumerable<AccountResponseModel>>(dtos);
+
+                return Ok(response);
+            }
+            catch(Exception ex)
+            {
+                // Log here
+                return BadRequest();
+            }
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -48,6 +68,11 @@ namespace BB.Finances.WebAPI.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(model);
+                }
+
                 var dto = _mapper.Map<AccountDTO>(model);
 
                 var result = await _accountService.CreateNewAsync(dto);
