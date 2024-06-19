@@ -1,4 +1,5 @@
-﻿using BB.Finances.Data.Entities;
+﻿using BB.Finances.Data.CQRS.Abstractions;
+using BB.Finances.Data.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -9,10 +10,7 @@ using System.Threading.Tasks;
 
 namespace BB.Finances.Data.CQRS
 {
-    public class GetAccountsByUserId : IRequest<IEnumerable<Account>>
-    {
-        public Guid UserId { get; set; }
-    }
+    public class GetAccountsByUserId : AbsGetByUserId<Account> { }
 
     public class GetAccountsByUserIdHandler : IRequestHandler<GetAccountsByUserId, IEnumerable<Account>>
     {

@@ -29,7 +29,7 @@ namespace BB.Finances.Core.Services
 
             var addingResult = await _mdr.Send(new CreateAccount()
             {
-                Account = entity
+                Entity = entity
             });
 
             if (addingResult != 1)
@@ -61,7 +61,7 @@ namespace BB.Finances.Core.Services
         {
             var entity = await _mdr.Send(new GetAccountById()
             {
-                AccountId = entityId
+                EntityId = entityId
             });
 
             if (entity == null)
