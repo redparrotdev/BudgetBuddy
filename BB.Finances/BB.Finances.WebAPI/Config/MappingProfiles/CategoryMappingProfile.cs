@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BB.Finances.Data.DTO;
 using BB.Finances.Data.Entities;
+using BB.Finances.WebAPI.Models.Request;
+using BB.Finances.WebAPI.Models.Response;
 
 namespace BB.Finances.WebAPI.Config.MappingProfiles
 {
@@ -26,6 +28,22 @@ namespace BB.Finances.WebAPI.Config.MappingProfiles
                 .ForMember(e => e.CreationDate, opt => opt.MapFrom(dto => dto.CreationDate))
                 .ForMember(e => e.CurrencyId, opt => opt.MapFrom(dto => dto.CurrencyId))
                 .ForMember(e => e.IsDeleted, opt => opt.MapFrom(dto => dto.IsDeleted));
+
+            CreateMap<CategoryDTO, CategoryResponseModel>()
+                .ForMember(rm => rm.Id, opt => opt.MapFrom(dto => dto.Id))
+                .ForMember(rm => rm.UserId, opt => opt.MapFrom(dto => dto.UserId))
+                .ForMember(rm => rm.Name, opt => opt.MapFrom(dto => dto.Name))
+                .ForMember(rm => rm.Description, opt => opt.MapFrom(dto => dto.Description))
+                .ForMember(rm => rm.CreationDate, opt => opt.MapFrom(dto => dto.CreationDate))
+                .ForMember(rm => rm.CurrencyId, opt => opt.MapFrom(dto => dto.CurrencyId))
+                .ForMember(rm => rm.CurrencySign, opt => opt.MapFrom(dto => dto.CurrencySign));
+
+            CreateMap<CategoryRequestModel, CategoryDTO>()
+                .ForMember(dto => dto.Id, opt => Guid.NewGuid())
+                .ForMember(dto => dto.UserId, opt => opt.MapFrom(rm => rm.UserId))
+                .ForMember(dto => dto.Name, opt => opt.MapFrom(rm => rm.Name))
+                .ForMember(dto => dto.Description, opt => opt.MapFrom(rm => rm.Description))
+                .ForMember(dto => dto.CurrencyId, opt => opt.MapFrom(rm => rm.CurrencyId));
         }
     }
 }

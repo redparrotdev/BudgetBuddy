@@ -27,6 +27,7 @@ namespace BB.Finances.WebAPI.Config
         private static void AddServices(this IServiceCollection services)
         {
             services.AddScoped<IAccountService, AccountService>();
+            services.AddScoped<ICategoryService, CategoryService>();
         }
     }
 }
