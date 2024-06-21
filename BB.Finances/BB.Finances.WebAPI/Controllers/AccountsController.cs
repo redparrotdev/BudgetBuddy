@@ -62,7 +62,7 @@ namespace BB.Finances.WebAPI.Controllers
         }
 
         [HttpPost]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Create([FromBody] AccountRequestModel model)
         {
@@ -82,6 +82,7 @@ namespace BB.Finances.WebAPI.Controllers
             catch(Exception ex)
             {
                 // Log here
+                Console.WriteLine(ex);
                 return BadRequest();
             }
         }

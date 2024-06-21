@@ -8,29 +8,29 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BB.Finances.WebAPI.Controllers
 {
-    [Route("api/finances/categories")]
+    [Route("api/finances")]
     [ApiController]
-    public class CategoryController : ControllerBase
+    public class ExpenseController : ControllerBase
     {
-        private readonly ICategoryService _categoryService;
         private readonly IMapper _mapper;
+        private readonly IExpenseService _expenseService;
 
-        public CategoryController(ICategoryService categoryService, IMapper mapper)
+        public ExpenseController(IMapper mapper, IExpenseService expenseService)
         {
-            _categoryService = categoryService;
             _mapper = mapper;
+            _expenseService = expenseService;
         }
 
-        [HttpGet("{categoryId:guid}")]
-        [ProducesResponseType(typeof(CategoryResponseModel), StatusCodes.Status200OK)]
+        [HttpGet("{expenseId:guid}")]
+        [ProducesResponseType(typeof(ExpenseResponseModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<IActionResult> Details([FromRoute] Guid categoryId)
+        public async Task<IActionResult> Details([FromRoute] Guid expenseId)
         {
             try
             {
-                var dto = await _categoryService.GetByIdAsync(categoryId);
+                var dto = await _expenseService.GetByIdAsync(expenseId);
 
-                var result = _mapper.Map<CategoryResponseModel>(dto);
+                var result = _mapper.Map<ExpenseResponseModel>(dto);
 
                 return Ok(result);
             }
@@ -42,15 +42,15 @@ namespace BB.Finances.WebAPI.Controllers
         }
 
         [HttpGet("user/{userId:guid}")]
-        [ProducesResponseType(typeof(CategoryResponseModel), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(IEnumerable<ExpenseResponseModel>), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get([FromRoute] Guid userId)
         {
             try
             {
-                var dtos = await _categoryService.GetAllByUserIdAsync(userId);
+                var dtos = await _expenseService.GetAllByUserIdAsync(userId);
 
-                var result = _mapper.Map<IEnumerable<CategoryResponseModel>>(dtos);
+                var result = _mapper.Map<IEnumerable<ExpenseResponseModel>>(dtos);
 
                 return Ok(result);
             }
@@ -64,7 +64,7 @@ namespace BB.Finances.WebAPI.Controllers
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Create([FromBody] CategoryRequestModel model)
+        public async Task<IActionResult> Create([FromBody] ExpenseRequestModel model)
         {
             try
             {
@@ -73,9 +73,9 @@ namespace BB.Finances.WebAPI.Controllers
                     return BadRequest(model);
                 }
 
-                var dto = _mapper.Map<CategoryDTO>(model);
+                var dto = _mapper.Map<ExpenseDTO>(model);
 
-                var result = await _categoryService.CreateNewAsync(dto);
+                var result = await _expenseService.CreateNewAsync(dto);
 
                 return Created(result.ToString(), null);
             }
