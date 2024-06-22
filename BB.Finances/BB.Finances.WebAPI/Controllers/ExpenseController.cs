@@ -61,6 +61,46 @@ namespace BB.Finances.WebAPI.Controllers
             }
         }
 
+        [HttpGet("by_account/{accountId:guid}")]
+        [ProducesResponseType(typeof(IEnumerable<ExpenseResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetByAccount([FromRoute] Guid accountId)
+        {
+            try
+            {
+                var dtos = await _expenseService.GetExpensesByAccountId(accountId);
+
+                var result = _mapper.Map<IEnumerable<ExpenseResponseModel>>(dtos);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                // Log here
+                return BadRequest();
+            }
+        }
+
+        [HttpGet("by_category/{categoryId:guid}")]
+        [ProducesResponseType(typeof(IEnumerable<ExpenseResponseModel>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetByCategory([FromRoute] Guid categoryId)
+        {
+            try
+            {
+                var dtos = await _expenseService.GetExpensesByCategoryId(categoryId);
+
+                var result = _mapper.Map<IEnumerable<ExpenseResponseModel>>(dtos);
+
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                // Log here
+                return BadRequest();
+            }
+        }
+
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status201Created)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]

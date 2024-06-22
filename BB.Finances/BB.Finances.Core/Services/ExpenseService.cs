@@ -4,6 +4,7 @@ using BB.Finances.Data.CQRS;
 using BB.Finances.Data.DTO;
 using BB.Finances.Data.Entities;
 using MediatR;
+using Microsoft.Identity.Client;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -72,6 +73,30 @@ namespace BB.Finances.Core.Services
             var result = _mapper.Map<ExpenseDTO>(entity);
 
             return result;
+        }
+
+        public async Task<IEnumerable<ExpenseDTO>> GetExpensesByAccountId(Guid accountId)
+        {
+            var entities = await _mdr.Send(new GetExpensesByAccountId()
+            {
+                AccountId = accountId
+            });
+
+            var dtos = _mapper.Map<IEnumerable<ExpenseDTO>>(entities);
+
+            return dtos;
+        }
+
+        public async Task<IEnumerable<ExpenseDTO>> GetExpensesByCategoryId(Guid categoryId)
+        {
+            var entities = await _mdr.Send(new GetExpensesByCategoryId()
+            {
+                CategoryId = categoryId
+            });
+
+            var dtos = _mapper.Map<IEnumerable<ExpenseDTO>>(entities);
+
+            return dtos;
         }
 
         public Task PatchAsync(ExpenseDTO changed)

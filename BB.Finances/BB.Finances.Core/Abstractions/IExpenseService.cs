@@ -9,5 +9,8 @@ namespace BB.Finances.Core.Abstractions
 {
     public interface IExpenseService : ICRUDService<ExpenseDTO>
     {
+        Task<IEnumerable<ExpenseDTO>> GetExpensesByAccountId(Guid accountId);
+
+        Task<IEnumerable<ExpenseDTO>> GetExpensesByCategoryId(Guid categoryId);
     }
 }
