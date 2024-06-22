@@ -29,6 +29,7 @@ namespace BB.Finances.WebAPI.Config
             services.AddScoped<IAccountService, AccountService>();
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IExpenseService, ExpenseService>();
+            services.AddScoped<ICurrencyService, CurrencyService>();
         }
     }
 }

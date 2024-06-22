@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BB.Finances.Data.CQRS
 {
-    public class CreateCategory : AbsCreate<Category> { }
+    public class CreateCategory : AbsCreate<Category>;
 
     public class CreateCategoryHandler : IRequestHandler<CreateCategory, int>
     {

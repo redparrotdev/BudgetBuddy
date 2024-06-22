@@ -10,28 +10,28 @@ using System.Threading.Tasks;
 
 namespace BB.Finances.Data.CQRS
 {
-    public class CreateExpense : AbsCreate<Expense>;
+    public class CreateCurrency : AbsCreate<Currency>;
 
-    public class CreateExpenseHandler : IRequestHandler<CreateExpense, int>
+    public class CreateCurrencyHandler : IRequestHandler<CreateCurrency, int>
     {
         private readonly FinancesDbContext _ctx;
 
-        public CreateExpenseHandler(FinancesDbContext ctx)
+        public CreateCurrencyHandler(FinancesDbContext ctx)
         {
             _ctx = ctx;
         }
 
-        public async Task<int> Handle(CreateExpense request, CancellationToken cancellationToken)
+        public async Task<int> Handle(CreateCurrency request, CancellationToken cancellationToken)
         {
-            var present = await _ctx.Expenses
-                .FirstOrDefaultAsync(e => e.Id == request.Entity.Id);
+            var present = await _ctx.Currencies
+                .FirstOrDefaultAsync(c => c.Id == request.Entity.Id);
 
             if (present != null)
             {
-                throw new Exception("Expense record is already exists");
+                throw new Exception("Currency is already exists!");
             }
 
-            await _ctx.Expenses.AddAsync(request.Entity);
+            await _ctx.Currencies.AddAsync(request.Entity);
             return await _ctx.SaveChangesAsync(cancellationToken);
         }
     }

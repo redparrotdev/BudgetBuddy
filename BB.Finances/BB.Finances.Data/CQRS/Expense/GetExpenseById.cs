@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BB.Finances.Data.CQRS
 {
-    public class GetExpenseById : AbsGetById<Expense> { }
+    public class GetExpenseById : AbsGetById<Expense>;
 
     public class GetExpenseByIdHandler : IRequestHandler<GetExpenseById, Expense?>
     {

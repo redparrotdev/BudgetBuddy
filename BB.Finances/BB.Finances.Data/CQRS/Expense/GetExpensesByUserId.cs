@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace BB.Finances.Data.CQRS
 {
-    public class GetExpensesByUserId : AbsGetByUserId<Expense> { }
+    public class GetExpensesByUserId : AbsGetByUserId<Expense>;
 
     public class GetExpensesByUserIdHandler : IRequestHandler<GetExpensesByUserId, IEnumerable<Expense>>
     {

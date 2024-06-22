@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace BB.Finances.Data.CQRS
 {
-    public class GetCategoriesByUserId : AbsGetByUserId<Category> { }
+    public class GetCategoriesByUserId : AbsGetByUserId<Category>;
 
     public class GetCategoriesByUserIdHandler : IRequestHandler<GetCategoriesByUserId, IEnumerable<Category>>
     {

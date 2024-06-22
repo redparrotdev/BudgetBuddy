@@ -1,5 +1,4 @@
 ﻿using BB.Finances.Data.CQRS.Abstractions;
-using BB.Finances.Data.DTO;
 using BB.Finances.Data.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -11,23 +10,22 @@ using System.Threading.Tasks;
 
 namespace BB.Finances.Data.CQRS
 {
-    public class GetAccountById : AbsGetById<Account>;
+    public class GetCurrencyById : AbsGetById<Currency>;
 
-    public class GetAccountByIdHandler : IRequestHandler<GetAccountById, Account?>
+    public class GetCurrencyByIdHandler : IRequestHandler<GetCurrencyById, Currency?>
     {
         private readonly FinancesDbContext _ctx;
 
-        public GetAccountByIdHandler(FinancesDbContext ctx)
+        public GetCurrencyByIdHandler(FinancesDbContext ctx)
         {
             _ctx = ctx;
         }
 
-        public async Task<Account?> Handle(GetAccountById request, CancellationToken cancellationToken)
+        public async Task<Currency?> Handle(GetCurrencyById request, CancellationToken cancellationToken)
         {
-            return await _ctx.Accounts
+            return await _ctx.Currencies
                 .AsNoTracking()
-                .Where(a => a.Id == request.EntityId)
-                .Include(a => a.Currency)
+                .Where(c => c.Id == request.EntityId)
                 .SingleOrDefaultAsync(cancellationToken);
         }
     }
