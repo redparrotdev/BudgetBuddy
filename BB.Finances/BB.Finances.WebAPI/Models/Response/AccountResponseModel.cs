@@ -10,10 +10,8 @@
 
         public double Balance { get; set; }
 
-        public DateTime creationDate { get; set; }
+        public DateTime CreationDate { get; set; }
 
-        public Guid CurrencyId { get; set; }
-
-        public string CurrencySign { get; set; }
+        public string Currency { get; set; }
     }
 }

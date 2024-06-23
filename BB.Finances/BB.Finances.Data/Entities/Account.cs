@@ -28,7 +28,6 @@ namespace BB.Finances.Data.Entities
         public DateTime CreationDate { get; set; }
 
         [Required]
-        public Guid CurrencyId { get; set; }
         public Currency Currency { get; set; }
 
         public IEnumerable<Expense> Expenses { get; set; }

@@ -1,6 +1,6 @@
 ﻿using AutoMapper;
-using BB.Finances.Data.DTO;
 using BB.Finances.Data.Entities;
+using BB.Finances.WebAPI.Extentions;
 using BB.Finances.WebAPI.Models.Request;
 using BB.Finances.WebAPI.Models.Response;
 
@@ -10,40 +10,19 @@ namespace BB.Finances.WebAPI.Config.MappingProfiles
     {
         public CategoryMappingProfile()
         {
-            CreateMap<Category, CategoryDTO>()
-                .ForMember(dto => dto.Id, opt => opt.MapFrom(e => e.Id))
-                .ForMember(dto => dto.UserId, opt => opt.MapFrom(e => e.UserId))
-                .ForMember(dto => dto.Name, opt => opt.MapFrom(e => e.Name))
-                .ForMember(dto => dto.Description, opt => opt.MapFrom(e => e.Description))
-                .ForMember(dto => dto.CreationDate, opt => opt.MapFrom(e => e.CreationDate))
-                .ForMember(dto => dto.CurrencyId, opt => opt.MapFrom(e => e.CurrencyId))
-                .ForMember(dto => dto.CurrencySign, opt => opt.MapFrom(e => e.Currency.CurrencySign))
-                .ForMember(dto => dto.IsDeleted, opt => opt.MapFrom(e => e.IsDeleted));
+            CreateMap<Category, CategoryResponseModel>()
+                .ForMember(rm => rm.Id, opt => opt.MapFrom(c => c.Id))
+                .ForMember(rm => rm.UserId, opt => opt.MapFrom(c => c.UserId))
+                .ForMember(rm => rm.Name, opt => opt.MapFrom(c => c.Name))
+                .ForMember(rm => rm.Description, opt => opt.MapFrom(c => c.Description))
+                .ForMember(rm => rm.CreationDate, opt => opt.MapFrom(c => c.CreationDate))
+                .ForMember(rm => rm.Currency, opt => opt.MapFrom(c => c.Currency.CurrencyToString()));
 
-            CreateMap<CategoryDTO, Category>()
-                .ForMember(e => e.Id, opt => opt.MapFrom(dto => dto.Id))
-                .ForMember(e => e.UserId, opt => opt.MapFrom(dto => dto.UserId))
-                .ForMember(e => e.Name, opt => opt.MapFrom(dto => dto.Name))
-                .ForMember(e => e.Description, opt => opt.MapFrom(dto => dto.Description))
-                .ForMember(e => e.CreationDate, opt => opt.MapFrom(dto => dto.CreationDate))
-                .ForMember(e => e.CurrencyId, opt => opt.MapFrom(dto => dto.CurrencyId))
-                .ForMember(e => e.IsDeleted, opt => opt.MapFrom(dto => dto.IsDeleted));
-
-            CreateMap<CategoryDTO, CategoryResponseModel>()
-                .ForMember(rm => rm.Id, opt => opt.MapFrom(dto => dto.Id))
-                .ForMember(rm => rm.UserId, opt => opt.MapFrom(dto => dto.UserId))
-                .ForMember(rm => rm.Name, opt => opt.MapFrom(dto => dto.Name))
-                .ForMember(rm => rm.Description, opt => opt.MapFrom(dto => dto.Description))
-                .ForMember(rm => rm.CreationDate, opt => opt.MapFrom(dto => dto.CreationDate))
-                .ForMember(rm => rm.CurrencyId, opt => opt.MapFrom(dto => dto.CurrencyId))
-                .ForMember(rm => rm.CurrencySign, opt => opt.MapFrom(dto => dto.CurrencySign));
-
-            CreateMap<CategoryRequestModel, CategoryDTO>()
-                .ForMember(dto => dto.Id, opt => Guid.NewGuid())
-                .ForMember(dto => dto.UserId, opt => opt.MapFrom(rm => rm.UserId))
-                .ForMember(dto => dto.Name, opt => opt.MapFrom(rm => rm.Name))
-                .ForMember(dto => dto.Description, opt => opt.MapFrom(rm => rm.Description))
-                .ForMember(dto => dto.CurrencyId, opt => opt.MapFrom(rm => rm.CurrencyId));
+            CreateMap<CategoryRequestModel, Category>()
+                .ForMember(c => c.UserId, opt => opt.MapFrom(rm => rm.UserId))
+                .ForMember(c => c.Name, opt => opt.MapFrom(rm => rm.Name))
+                .ForMember(c => c.Description, opt => opt.MapFrom(rm => rm.Description))
+                .ForMember(c => c.Currency, opt => opt.MapFrom(rm => rm.Currency.CurrencyStringToCurrencyEnum()));
         }
     }
 }

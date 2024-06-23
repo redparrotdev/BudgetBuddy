@@ -1,4 +1,6 @@
-﻿namespace BB.Finances.WebAPI.Models.Response
+﻿using BB.Finances.Data.Entities;
+
+namespace BB.Finances.WebAPI.Models.Response
 {
     public class CategoryResponseModel
     {
@@ -12,8 +14,6 @@
 
         public DateTime CreationDate { get; set; }
 
-        public Guid CurrencyId { get; set; }
-
-        public string CurrencySign { get; set; }
+        public string Currency { get; set; }
     }
 }

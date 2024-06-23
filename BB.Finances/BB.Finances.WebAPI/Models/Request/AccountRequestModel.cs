@@ -17,6 +17,6 @@ namespace BB.Finances.WebAPI.Models.Request
         public double Balance { get; set; }
 
         [Required]
-        public Guid CurrencyId { get; set; }
+        public string Currency { get; set; }
     }
 }

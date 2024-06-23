@@ -1,7 +1,5 @@
-﻿using BB.Finances.Core.Abstractions;
-using BB.Finances.Core.Services;
-using BB.Finances.Data;
-using BB.Finances.Data.CQRS;
+﻿using BB.Finances.Data;
+using BB.Finances.Core.CQRS;
 using Microsoft.EntityFrameworkCore;
 
 namespace BB.Finances.WebAPI.Config
@@ -11,7 +9,6 @@ namespace BB.Finances.WebAPI.Config
         public static void ConfigureServices(this IServiceCollection services, IConfiguration config)
         {
             // Mediatr
-            services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<IAccountService>());
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAccountById>());
 
             // Automapper
@@ -26,10 +23,7 @@ namespace BB.Finances.WebAPI.Config
 
         private static void AddServices(this IServiceCollection services)
         {
-            services.AddScoped<IAccountService, AccountService>();
-            services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IExpenseService, ExpenseService>();
-            services.AddScoped<ICurrencyService, CurrencyService>();
+            // TODO Add services if neded
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using BB.Finances.Data.DTO;
+﻿
 using BB.Finances.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -14,7 +14,6 @@ namespace BB.Finances.Data
         public DbSet<Expense> Expenses { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Currency> Currencies { get; set; }
 
         public FinancesDbContext(DbContextOptions<FinancesDbContext> options) : base(options)
         {
@@ -24,34 +23,6 @@ namespace BB.Finances.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-
-            // Seeding currency values
-            modelBuilder.Entity<Currency>()
-                .HasData(
-                new Currency()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "US Dollar",
-                    CurrencySign = "USD"
-                },
-                new Currency()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "EURO",
-                    CurrencySign = "EUR"
-                },
-                new Currency()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Russian rouble",
-                    CurrencySign = "RUB"
-                },
-                new Currency()
-                {
-                    Id = Guid.NewGuid(),
-                    Name = "Belarussian rouble",
-                    CurrencySign = "BYN"
-                });
         }
     }
 }
