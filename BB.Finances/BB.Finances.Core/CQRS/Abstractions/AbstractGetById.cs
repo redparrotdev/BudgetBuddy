@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace BB.Finances.Core.CQRS.Abstractions
 {
-    public abstract class AbstractGetById<T> : IRequest<T?> where T : IBaseEntity
+    public abstract class AbstractGetById<T> : IRequest<T> where T : IBaseEntity
     {
         public Guid EntityId { get; set; }
     }

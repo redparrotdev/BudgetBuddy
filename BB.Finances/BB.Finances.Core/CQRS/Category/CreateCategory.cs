@@ -1,6 +1,7 @@
 ﻿using BB.Finances.Core.CQRS.Abstractions;
 using BB.Finances.Data;
 using BB.Finances.Data.Entities;
+using BB.Finances.Data.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -25,7 +26,7 @@ namespace BB.Finances.Core.CQRS
 
             if (presentCategory != null)
             {
-                throw new Exception("Category is already exists!");
+                throw new RaceException("Category is already exists!");
             }
 
             await _ctx.Categories.AddAsync(request.Entity);

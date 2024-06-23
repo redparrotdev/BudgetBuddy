@@ -1,6 +1,7 @@
 ﻿using BB.Finances.Data;
 using BB.Finances.Core.CQRS;
 using Microsoft.EntityFrameworkCore;
+using Serilog;
 
 namespace BB.Finances.WebAPI.Config
 {
@@ -8,6 +9,7 @@ namespace BB.Finances.WebAPI.Config
     {
         public static void ConfigureServices(this IServiceCollection services, IConfiguration config)
         {
+            services.AddSerilog();
             // Mediatr
             services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblyContaining<GetAccountById>());
 

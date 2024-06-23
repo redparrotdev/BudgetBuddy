@@ -1,5 +1,7 @@
-
+using Serilog;
+using Serilog.Events;
 using BB.Finances.WebAPI.Config;
+using BB.Finances.WebAPI.Middleware;
 
 namespace BB.Finances.WebAPI
 {
@@ -7,6 +9,12 @@ namespace BB.Finances.WebAPI
     {
         public static void Main(string[] args)
         {
+            Log.Logger = new LoggerConfiguration()
+                .WriteTo.Debug(LogEventLevel.Debug)
+                .WriteTo.Console(LogEventLevel.Information)
+                .WriteTo.File(Path.Combine(Environment.CurrentDirectory, "logfile.log"), LogEventLevel.Error)
+                .CreateLogger();
+
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -18,6 +26,8 @@ namespace BB.Finances.WebAPI
             builder.Services.AddSwaggerGen();
 
             var app = builder.Build();
+
+            app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

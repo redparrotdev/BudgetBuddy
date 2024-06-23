@@ -1,6 +1,7 @@
 ﻿using BB.Finances.Core.CQRS.Abstractions;
 using BB.Finances.Data;
 using BB.Finances.Data.Entities;
+using BB.Finances.Data.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,7 +10,7 @@ namespace BB.Finances.Core.CQRS
 {
     public class GetExpenseById : AbstractGetById<Expense>;
 
-    public class GetExpenseByIdHandler : IRequestHandler<GetExpenseById, Expense?>
+    public class GetExpenseByIdHandler : IRequestHandler<GetExpenseById, Expense>
     {
         private readonly FinancesDbContext _ctx;
 
@@ -18,7 +19,7 @@ namespace BB.Finances.Core.CQRS
             _ctx = ctx;
         }
 
-        public async Task<Expense?> Handle(GetExpenseById request, CancellationToken cancellationToken)
+        public async Task<Expense> Handle(GetExpenseById request, CancellationToken cancellationToken)
         {
             return await _ctx.Expenses
                 .AsNoTracking()
@@ -27,7 +28,8 @@ namespace BB.Finances.Core.CQRS
                 .ThenInclude(a => a.Currency)
                 .Include(e => e.Category)
                 .ThenInclude(c => c.Currency)
-                .SingleOrDefaultAsync(cancellationToken);
+                .SingleOrDefaultAsync(cancellationToken)
+                ?? throw new NotFoundException("Cant find expense record with this Id");
         }
     }
 }

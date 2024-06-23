@@ -1,5 +1,6 @@
 ﻿using BB.Finances.Core.CQRS.Abstractions;
 using BB.Finances.Data.Entities;
+using BB.Finances.Data.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +25,7 @@ namespace BB.Finances.Data.CQRS
 
             if (present != null)
             {
-                throw new Exception("Expense record is already exists");
+                throw new RaceException("Expense record is already exists");
             }
 
             await _ctx.Expenses.AddAsync(request.Entity);

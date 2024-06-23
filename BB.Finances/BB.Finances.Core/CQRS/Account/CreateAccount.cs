@@ -1,6 +1,7 @@
 ﻿using BB.Finances.Core.CQRS.Abstractions;
 using BB.Finances.Data;
 using BB.Finances.Data.Entities;
+using BB.Finances.Data.Exceptions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -24,7 +25,7 @@ namespace BB.Finances.Core.CQRS
 
             if (presentAccount != null)
             {
-                throw new Exception("Account is already exists!");
+                throw new RaceException("Account is already exists!");
             }
 
             await _ctx.Accounts.AddAsync(request.Entity);
