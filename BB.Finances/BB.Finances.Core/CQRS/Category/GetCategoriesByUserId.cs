@@ -23,7 +23,6 @@ namespace BB.Finances.Core.CQRS
             return await _ctx.Categories
                 .AsNoTracking()
                 .Where(c => c.UserId == request.UserId)
-                .Include(c => c.Currency)
                 .ToListAsync(cancellationToken);
         }
     }

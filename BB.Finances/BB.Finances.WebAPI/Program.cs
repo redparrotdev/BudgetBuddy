@@ -27,8 +27,6 @@ namespace BB.Finances.WebAPI
 
             var app = builder.Build();
 
-            app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
-
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
             {
@@ -40,6 +38,7 @@ namespace BB.Finances.WebAPI
 
             app.UseAuthorization();
 
+            app.UseMiddleware<GlobalExceptionHandlerMiddleware>();
 
             app.MapControllers();
 

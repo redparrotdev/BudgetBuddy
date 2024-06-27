@@ -24,7 +24,6 @@ namespace BB.Finances.Core.CQRS
             return await _ctx.Categories
                 .AsNoTracking()
                 .Where(c => c.Id == request.EntityId)
-                .Include(c => c.Currency)
                 .SingleOrDefaultAsync(cancellationToken)
                 ?? throw new NotFoundException("Cant find category with this Id");
         }

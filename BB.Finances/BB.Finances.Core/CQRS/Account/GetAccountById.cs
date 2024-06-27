@@ -24,7 +24,6 @@ namespace BB.Finances.Core.CQRS
             return await _ctx.Accounts
                 .AsNoTracking()
                 .Where(a => a.Id == request.EntityId)
-                .Include(a => a.Currency)
                 .SingleOrDefaultAsync(cancellationToken)
                 ?? throw new NotFoundException("Cant find account with this Id");
         }
