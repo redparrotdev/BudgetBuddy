@@ -2,6 +2,7 @@
 using BB.Finances.Core.CQRS;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using BB.Finances.WebAPI.Middleware;
 
 namespace BB.Finances.WebAPI.Config
 {
@@ -25,7 +26,7 @@ namespace BB.Finances.WebAPI.Config
 
         private static void AddServices(this IServiceCollection services)
         {
-            // TODO Add services if neded
+            services.AddTransient<GlobalExceptionHandlerMiddleware>();
         }
     }
 }
