@@ -1,4 +1,6 @@
 
+using BB.IdentityService.WebAPI.Config;
+
 namespace BB.IdentityService.WebAPI
 {
     public class Program
@@ -8,12 +10,14 @@ namespace BB.IdentityService.WebAPI
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            builder.Configuration.AddJsonFile("secrets.json", false, true);
+
+            builder.Services.AddServices(builder.Configuration);
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -25,8 +29,9 @@ namespace BB.IdentityService.WebAPI
 
             app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+            app.UseServices();
 
+            app.UseAuthorization();
 
             app.MapControllers();
 
