@@ -1,5 +1,7 @@
-﻿using BB.IdentityService.WebAPI.Helpers;
+﻿using BB.Core.CQRS.JWT;
+using BB.IdentityService.WebAPI.Helpers;
 using BB.IdentityService.WebAPI.Models.Request;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -13,31 +15,39 @@ namespace BB.IdentityService.WebAPI.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IConfiguration _configuration;
+        private readonly IMediator _mediator;
 
-        public UsersController(IConfiguration configuration)
+        public UsersController(IConfiguration configuration, IMediator mediator)
         {
             _configuration = configuration;
+            _mediator = mediator;
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] UserRequestModel model)
         {
-            var claims = new List<Claim>
+            if (!ModelState.IsValid)
             {
-                new Claim("Email", model.Email),
-                new Claim("UserId", Guid.NewGuid().ToString())
-            };
+                return BadRequest(model);
+            }
+            // Register new user using user service
 
-            var jwt = new JwtSecurityToken(
-                issuer: _configuration["JWT:Issuer"],
-                audience: _configuration["JWT:Audience"],
-                claims: claims,
-                expires: DateTime.UtcNow.AddMinutes(15),
-                signingCredentials: new SigningCredentials(
+            // Create new jwt token for user
+            var credentials = new SigningCredentials(
                     JWTHelper.GetSymmetricSecurityKey(_configuration["JWT:Key"]!),
-                    SecurityAlgorithms.HmacSha256));
+                    SecurityAlgorithms.HmacSha256);
 
-            return Created("", new JwtSecurityTokenHandler().WriteToken(jwt));
+            var result = await _mediator.Send(new CreateJWT
+            {
+                UserId = Guid.NewGuid(),
+                Email = model.Email,
+                Issuer = _configuration["JWT:Issuer"] ?? "bb.identity",
+                Audience = _configuration["JWT:Adience"] ?? "bb.finances",
+                Expires = DateTime.UtcNow.AddHours(24),
+                Credentials = credentials
+            });
+
+            return Created("", result);
         }
     }
 }

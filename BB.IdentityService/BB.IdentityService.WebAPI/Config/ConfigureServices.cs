@@ -1,4 +1,5 @@
-﻿using BB.IdentityService.WebAPI.Helpers;
+﻿using BB.Core.CQRS.JWT;
+using BB.IdentityService.WebAPI.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace BB.IdentityService.WebAPI.Config
@@ -7,6 +8,8 @@ namespace BB.IdentityService.WebAPI.Config
     {
         public static void AddServices(this IServiceCollection services, ConfigurationManager configManager)
         {
+            services.AddMediatR(config => config.RegisterServicesFromAssemblyContaining<CreateJWT>());
+
             services.AddAuthorization();
 
             // Addind JWT Auth

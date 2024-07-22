@@ -19,15 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BB.Core\BB.Core.csproj" />
     <ProjectReference Include="..\BB.IdentityService.WebAPI\BB.IdentityService.WebAPI.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <Using Include="Xunit" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Fixtures\" />
   </ItemGroup>
 
 </Project>

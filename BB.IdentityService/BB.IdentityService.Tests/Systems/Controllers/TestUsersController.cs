@@ -1,6 +1,9 @@
+using BB.Core.CQRS.JWT;
+using BB.IdentityService.Tests.Fixtures;
 using BB.IdentityService.WebAPI.Controllers;
 using BB.IdentityService.WebAPI.Models.Request;
 using FluentAssertions;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +15,7 @@ namespace BB.IdentityService.Tests.Systems.Controllers
     public class TestUsersController
     {
         private readonly IConfiguration _config;
+        private readonly Mock<IMediator> _mediatorMock;
 
         private readonly List<UserRequestModel> _mockUsers = new List<UserRequestModel>
         {
@@ -41,13 +45,20 @@ namespace BB.IdentityService.Tests.Systems.Controllers
             _config = new ConfigurationBuilder()
                 .AddInMemoryCollection(configSettings)
                 .Build();
+
+            _mediatorMock = new Mock<IMediator>();
         }
 
         [Fact]
         public async Task Register_OnSuccess_Returns201StatusCode()
         {
             // Arrange
-            var sut = new UsersController(_config);
+            _mediatorMock.Setup(m => m.Send(
+                It.IsAny<CreateJWT>(),
+                default))
+                .ReturnsAsync(JwtTokenFixture.CreateNewJwtToken(_config, _mockUsers[0]));
+
+            var sut = new UsersController(_config, _mediatorMock.Object);
 
             // Act
             var result = (ObjectResult)await sut.Register(_mockUsers[0]);
@@ -67,7 +78,12 @@ namespace BB.IdentityService.Tests.Systems.Controllers
         public async Task Register_OnSuccess_CreatesValidJWT()
         {
             // Arrange
-            var sut = new UsersController(_config);
+            _mediatorMock.Setup(m => m.Send(
+                It.IsAny<CreateJWT>(),
+                default))
+                .ReturnsAsync(JwtTokenFixture.CreateNewJwtToken(_config, _mockUsers[1]));
+
+            var sut = new UsersController(_config, _mediatorMock.Object);
             var jwtHandler = new JwtSecurityTokenHandler();
 
             // Act
@@ -110,6 +126,18 @@ namespace BB.IdentityService.Tests.Systems.Controllers
             token.Claims
                 .Should()
                 .NotBeNullOrEmpty();
+
+            var emailClaim = token.Claims.
+                Where(c => c.Type == "Email")
+                .FirstOrDefault();
+
+            emailClaim.Should()
+                .NotBeNull();
+
+            var emailValue = emailClaim!.Value;
+
+            emailValue!.Should()
+                .Be(_mockUsers[1].Email);
         }
     }
 }
